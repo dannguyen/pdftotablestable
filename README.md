@@ -2,9 +2,6 @@
 
 Making a table to compare how well tools extract tabular data from PDFs.
 
-Todo: Come up with a methodology (what's the baseline?) to compare the results across tools. Fidelity to table structure is the main goal, but not the only way that tools differ.
-
-Todo: Just collected PDFs and tools. Testing to come.
 
 ## Tools
 
@@ -30,3 +27,50 @@ Note: not interested in PDFs that contain _scanned_ documents. Of the tools we'r
 - [pdfs/nypd-weekly-stats.pdf](pdfs/nypd-weekly-stats.pdf): [NYPD Weekly Crime Stats](http://www.nyc.gov/html/nypd/downloads/pdf/crime_statistics/cs-en-us-city.pdf)
 - [pdfs/menlo-park-sunridge-cad-interface.pdf](pdfs/menlo-park-sunridge-cad-interface.pdf) - A PDF containing one actual table, and a few pages of screenshots
 - [pdfs/nics-firearm-background-checks.pdf](pdfs/nics-firearm-background-checks.pdf) - NICS Firearm Background Checks, as copied from [jsvine/pdfplumber](https://github.com/jsvine/pdfplumber/blob/c5bbf497ba80e38650da9bac0f47deeb4ab6105f/examples/pdfs/background-checks.pdf)
+
+## Todos
+
+
+- [ ] Come up with a methodology (what's the baseline?) to compare the results across tools. Fidelity to table structure is the main goal, but not the only way that tools differ.
+
+- [ ] Makes more sense to split every PDF into separate pages. Easier to do unit testing of each program/service.
+- [ ] Think of functionality tests (handling of word-wrap, header/footer text) beyond just cell-by-cell accuracy.
+- [ ] Figure way to kind of automate CometDocs and ABBYY and other services
+
+Prospective project tree:
+
+      ├── README.md
+      ├── pdfs
+      |    └── ca-warn-2013
+      |        ├── 001.pdf
+      |        ├── 002.pdf
+      |        └── 003.pdf
+      └── results
+          ├── pdfplumber
+          |   └── ca-warn-2013
+          |       ├── 001.csv
+          |       ├── 002.csv
+          |       └── 003.csv
+          └── tabula-java
+              └── ca-warn-2013
+                  ├── 001.csv
+                  ├── 002.csv
+                  └── 003.csv
+
+
+
+## Example test suite and results
+
+
+~~~sh
+java -jar \
+    bins/tabula-0.9.1-jar-with-dependencies.jar --pages all \
+    pdfs/nypd-weekly-stats.pdf \
+    > results/tabula-java/nypd-weekly-stats.csv
+
+java -jar \
+    bins/tabula-0.9.1-jar-with-dependencies.jar --pages all \
+    pdfs/menlo-park-sunridge-cad-interface.pdf \
+    > results/tabula-java/menlo-park-sunridge-cad-interface.csv
+
+~~~
